@@ -4,7 +4,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1000; /* Set a high z-index value for the modal container wrapper */
+  z-index: 1000; 
 }
 
 .modal-container {
@@ -12,24 +12,64 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 300px; /* Adjust width as needed */
+  width: 320px; 
+  height: 560px;
   background-color: white;
   box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
-  z-index: 1000; /* Set a high z-index value for the modal */
+  z-index: 1000; 
 }
 
 .modal-content {
   padding: 20px;
 }
 
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+div {
+  margin-bottom: 10px;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
   border: none;
   cursor: pointer;
-  font-size: 14px;
-  color: #333;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.imageLabel{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  display: none;
 }

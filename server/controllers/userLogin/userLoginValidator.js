@@ -39,7 +39,7 @@ userLoginValidator.userLogin = (body) => { return new Promise(async (resolve, re
     
         resolve(data);   
     } else {
-        reject("Invalid User/User does not exist. Please Try Again with Valid Data");
+        reject("Invalid User/User does not exist");
     }
 
    } else{

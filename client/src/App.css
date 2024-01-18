@@ -7,11 +7,19 @@
   flex-wrap: wrap;
   justify-content: space-around;
 }
+.backgroundImage{
+  background-image: url('./assets/images/nissan.jpg');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+}
 
 .card {
+  display: flex;
+  flex-direction: column;
   position: relative;
   width: 300px;
-  height: 400px;
+  height: auto;
   margin: 10px;
   padding: 15px;
   border: 1px solid #e1e1e1;
@@ -19,24 +27,28 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
   background-color: #fff;
-  overflow: hidden;
+  overflow:hidden;
   z-index: 1;
 }
 
 .card:hover {
   transform: scale(1.05);
 }
-
-.card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px 8px 0 0;
+.CarFormButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  bottom: 0;
 }
 
 .card h3 {
   font-size: 1.5rem;
   margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .card p {
@@ -55,8 +67,11 @@
   transform: translateX(0);
 }
 
-@media (max-width: 768px) {
-  .card {
-    width: 100%;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
