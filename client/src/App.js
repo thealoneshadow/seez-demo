@@ -8,7 +8,7 @@ import Alert from "@mui/material/Alert";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Pagination from '@mui/material/Pagination';
-import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded';
+import LinearProgress from '@mui/material/LinearProgress';
 
 function App() {
   const [carProducts, setCarProducts] = useState([]);
@@ -40,7 +40,9 @@ function App() {
   }, []);
 
   if (!carProducts || carProducts.length === 0) {
-    return <div>Fetching Data...</div>;
+    return <div>
+      <LinearProgress />
+      </div>;
   }
 
   const handlePrevClick = (index, car) => {
