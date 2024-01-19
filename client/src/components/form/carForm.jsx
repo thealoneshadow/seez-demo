@@ -267,7 +267,7 @@ const CarForm = (newprice) => {
             </div>
             {alert != "" && (numericPrice - tradeOfValue) != numericPrice ? <Alert severity={alert} className='error'> {alert == "error" ? "Hope to see you again!":"Yaay, we will be in touch shortly"}</Alert>:null}
             <p><b>{ numericPrice - tradeOfValue > 0
-            ? "Estimated Value to pay: $" + (numericPrice - tradeOfValue)
+            ? "Estimated Value to pay: $" + (numericPrice - tradeOfValue != numericPrice ? numericPrice - tradeOfValue :0)
             : "Sorry You cannot trade this vehicle"
           }</b></p>
           

@@ -25,7 +25,7 @@ const productsSchema = new Schema({
         type: String,
         required:false
       },
-      "dealershipDetails":{
+      "dealership":{
         type: String,
         required:false
       }

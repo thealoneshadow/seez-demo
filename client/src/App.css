@@ -75,3 +75,46 @@
     opacity: 1;
   }
 }
+
+.carousel-container {
+  width: 100%; 
+  margin: 20px 0; 
+}
+
+.image-container {
+  position: relative;
+}
+
+.arrow-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color:"#000";
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  opacity: .2;
+}
+.arrow-button:hover{
+  opacity: 1;
+  background-color: #0d2a69;
+}
+
+.arrow-button.left {
+  left: 0;
+  background-color: #0d2a69;
+  background-image: none;
+}
+
+.arrow-button.right {
+  right: 0;
+  background-color: #0d2a69;
+}
+
+.custom-pagination-text {
+  color: white !important;
+}

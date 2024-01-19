@@ -3,7 +3,6 @@ const Product = require("../../models/product");
 const data1 = require("../products");
 productDataValidator.productData = () => { return new Promise(async (resolve, reject) => {
 
-    const data = await Product.find();
     // for(let i=0;i<data1.length;i++){
     //     const newProduct= new Product({ 
     //         brand: data1[i].brand,
@@ -16,6 +15,8 @@ productDataValidator.productData = () => { return new Promise(async (resolve, re
     //     await newProduct.save();
     // }
     //await Product.deleteMany({});
+
+    const data = await Product.find().lean();
     if (data) {
         resolve(data);   
     } else {
