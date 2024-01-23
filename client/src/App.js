@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CarForm from "./components/form/carForm";
 import ButtonAppBar from "./components/navbar/navbar";
-import Footer from "./components/footer/footer";
+import Footer from "./components/footer/Footer";
 import Alert from "@mui/material/Alert";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
