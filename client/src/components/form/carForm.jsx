@@ -5,29 +5,31 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { IconButton } from "@mui/material";
-import FolderIcon from "@mui/icons-material/Folder";
 import FormLabel from "@mui/material/FormLabel";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import Alert from "@mui/material/Alert";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CarForm = (newprice) => {
   const numericPrice = parseFloat(newprice.price.price.replace(/[^0-9.]/g, ""));
-  
-  const [modalOpen, setModalOpen] = useState(false);
-  const [tradeOfValue, setTradeOfValue] = useState(0);
-  const [carData, setCarData] = useState({ brand: "",
-    model: "",
-    price: "",
-    year: "",
-    kmDriven: "",
-    selectedOption: "No Damage",
-    images: []});
 
-  const [errors, setErrors] = useState({year: "", kmDriven: "", price: ""});
+  const [modalOpen, setModalOpen] = useState(false);
+  const [BuyOfValue, setBuyOfValue] = useState(0);
+  const [carData, setCarData] = useState({
+    address: "",
+    model: "",
+    quantity: 1,
+    year: "0",
+    selectedOption: "Cash On Delivery",
+    images: [],
+  });
+
+  const [errors, setErrors] = useState({ address: "", quantity: "" });
   const [username, setUsername] = useState("");
   const [alert, setAlert] = useState("success");
+  const notify = () => toast.success("Order Placed");
 
   useEffect(() => {
     let user = sessionStorage.getItem("username")
@@ -53,68 +55,47 @@ const CarForm = (newprice) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    calculateCarValue();
+    if (carData.address === "") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        address: "Invalid Address",
+      }));
+      return;
+    }
+
+    if (errors.quantity === "") {
+      console.log("Hi");
+      setAlert("");
+      notify();
+      setTimeout(() => {
+        setModalOpen(false);
+      }, 6000);
+    } else {
+      setAlert("error");
+    }
   };
 
   const validateInput = (name, value) => {
-    if (name === "year") {
-      const isValidYear =
-        /^(18[0-9]{2}|19[0-9]{2}|200[0-9]|201[0-9]|202[0-4])$/.test(value);
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: isValidYear ? "" : "Invalid year",
-      }));
-    } else if (name === "kmDriven") {
+    if (name === "quantity") {
       const isValidYear = /^(?:[1-9]\d{0,5}|[1-4]\d{5}|500000)$/.test(value);
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [name]: isValidYear ? "" : "Invalid Kilometers",
-      }));
-    } else if (name === "price") {
-      const isValidYear = /^(?:[1-9]\d{0,5}|[1-4]\d{5}|500000)$/.test(value);
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: isValidYear ? "" : "Invalid Price",
+        [name]: isValidYear ? "" : "Invalid quantity",
       }));
     }
   };
 
   const hasErrors = Object.values(errors).some((error) => error !== "");
   const isEmpty = Object.values(carData).some(
-    (error) => error == "" || error == []
+    (error) => error === "" || error == []
   );
-
-  const calculateCarValue = () => {
-    let { price, year, kmDriven, selectedOption } = carData;
-    price = parseInt(price);
-    const damageValue =
-      selectedOption === "No Damage"
-        ? 0
-        : selectedOption === "Minor Scratches"
-        ? (price / 100) * 10
-        : (price / 100) * 30;
-    const ageValue =
-      year > 2021 ? 0 : year > 2010 ? (price / 100) * 15 : (price / 100) * 25;
-    const kmDrivenValue =
-      kmDriven < 1000
-        ? 0
-        : kmDriven < 25000
-        ? (price / 100) * 10
-        : (price / 100) * 25;
-    const totalValue = price - (damageValue + ageValue + kmDrivenValue);
-    console.log(tradeOfValue, numericPrice);
-    setTradeOfValue(totalValue);
-    setAlert("");
-  };
 
   return (
     <div>
       {!modalOpen && (
         <Tooltip
           title={
-            username
-              ? "Trade your old vehicle"
-              : "Please Login to use this feature"
+            username ? "Buy your pizza" : "Please Login to use this feature"
           }
         >
           <Button
@@ -125,30 +106,30 @@ const CarForm = (newprice) => {
               setModalOpen(true);
               setAlert("wait");
               setCarData({
-                brand: "",
+                address: "",
                 model: "",
-                price: "",
+                quantity: 1,
                 year: "",
                 kmDriven: "",
-                selectedOption: "No Damage",
+                selectedOption: "Cash On Delivery",
                 images: [],
               });
               setErrors({
-                year: "",
-                kmDriven: "",
-                price: "",
+                address: "",
+                quantity: "",
               });
-              setTradeOfValue(0);
+              setBuyOfValue(0);
             }}
           >
             <HandshakeIcon sx={{ mr: 1 }} />
-            <b>Trade your old vehicle</b>
+            <b>Buy your pizza</b>
           </Button>
         </Tooltip>
       )}
 
       {modalOpen && (
         <div className="modal-container">
+          <ToastContainer style={{ marginRight: "-16px", marginTop: "-5px" }} />
           <div className="modal-content">
             <Button
               variant="contained"
@@ -165,18 +146,17 @@ const CarForm = (newprice) => {
               onClick={() => {
                 setModalOpen(false);
                 setCarData({
-                  brand: "",
+                  address: "",
                   model: "",
-                  price: "",
+                  quantity: 1,
                   year: "",
                   kmDriven: "",
-                  selectedOption: "No Damage",
+                  selectedOption: "Cash On Delivery",
                   images: [],
                 });
                 setErrors({
-                  year: "",
-                  kmDriven: "",
-                  price: "",
+                  address: "",
+                  quantity: "",
                 });
                 setAlert("wait");
               }}
@@ -186,58 +166,30 @@ const CarForm = (newprice) => {
             <form onSubmit={handleSubmit}>
               <TextField
                 id="standard-basic"
-                label="Brand of vehicle"
+                label="Address for Pizza Delivery"
                 variant="standard"
                 type="text"
-                name="brand"
-                value={carData.brand}
+                name="address"
+                value={carData.address}
                 onChange={handleInputChange}
+                error={Boolean(errors.address)}
+                helperText={errors.address}
               />
-              <TextField
-                id="standard-basic"
-                label="Model"
-                variant="standard"
-                type="text"
-                name="model"
-                value={carData.model}
-                onChange={handleInputChange}
-              />
+
               <TextField
                 id="standard-basic"
                 label="Price in $"
                 variant="standard"
-                type="text"
-                name="price"
-                value={carData.price}
+                type="number"
+                name="quantity"
+                value={carData.quantity}
                 onChange={handleInputChange}
-                error={Boolean(errors.price)}
-                helperText={errors.price}
-              />
-              <TextField
-                id="standard-basic"
-                label="Valid Year of manufacturing"
-                variant="standard"
-                type="text"
-                name="year"
-                value={carData.year}
-                onChange={handleInputChange}
-                error={Boolean(errors.year)}
-                helperText={errors.year}
-              />
-              <TextField
-                id="standard-basic"
-                label="KM Driven"
-                variant="standard"
-                type="text"
-                name="kmDriven"
-                value={carData.kmDriven}
-                onChange={handleInputChange}
-                error={Boolean(errors.kmDriven)}
-                helperText={errors.kmDriven}
+                error={Boolean(errors.quantity)}
+                helperText={errors.quantity}
               />
 
               <FormLabel id="demo-row-radio-buttons-group-label">
-                Vehicle Condition
+                Payment Details
               </FormLabel>
               <RadioGroup
                 row
@@ -246,57 +198,41 @@ const CarForm = (newprice) => {
               >
                 <FormControlLabel
                   control={<Radio />}
-                  label="No Damage"
+                  label="Cash On Delivery"
                   type="radio"
                   name="selectedOption"
-                  value="No Damage"
-                  checked={carData.selectedOption === "No Damage"}
+                  value="Cash On Delivery"
+                  checked={carData.selectedOption === "Cash On Delivery"}
                   onChange={handleOptionChange}
                 />
                 <FormControlLabel
                   control={<Radio />}
-                  label="Minor Scratches"
+                  label="Crypto Wallet"
                   type="radio"
                   name="selectedOption"
-                  value="Minor Scratches"
-                  checked={carData.selectedOption === "Minor Scratches"}
+                  value="Crypto Wallet"
+                  checked={carData.selectedOption === "Crypto Wallet"}
                   onChange={handleOptionChange}
                 />
                 <FormControlLabel
                   control={<Radio />}
-                  label="Repaired"
+                  label="Card On Delivery"
                   type="radio"
                   name="selectedOption"
-                  value="Repaired"
-                  checked={carData.selectedOption === "Repaired"}
+                  value="Card On Delivery"
+                  checked={carData.selectedOption === "Card On Delivery"}
                   onChange={handleOptionChange}
                 />
               </RadioGroup>
               <div></div>
 
-              <label>
-                Select Images({carData.images.length}):
-                <input
-                  type="file"
-                  name="images"
-                  multiple
-                  accept=".jpg, .jpeg, .png, .gif"
-                  style={{ display: "none" }}
-                  onChange={handleImageChange}
-                />
-                <IconButton component="span">
-                  <FolderIcon />
-                </IconButton>
-              </label>
-
               <button
                 type="submit"
-                disabled={hasErrors || isEmpty}
                 style={{
-                  backgroundColor: isEmpty || hasErrors ? "grey" : "green",
+                  backgroundColor: "green",
                 }}
               >
-                Calculate Price
+                Calculate Final Price
               </button>
             </form>
             <div
@@ -306,18 +242,18 @@ const CarForm = (newprice) => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 opacity:
-                  numericPrice - tradeOfValue < 0 && (hasErrors || isEmpty)
+                  numericPrice - BuyOfValue < 0 && (hasErrors || isEmpty)
                     ? 0.5
                     : 1,
                 pointerEvents:
-                  numericPrice - tradeOfValue < 0 && (hasErrors || isEmpty)
+                  numericPrice - BuyOfValue < 0 && (hasErrors || isEmpty)
                     ? "none"
                     : "auto",
               }}
             >
               {alert == "" &&
-                numericPrice - tradeOfValue > 0 &&
-                numericPrice - tradeOfValue != numericPrice && (
+                numericPrice - BuyOfValue > 0 &&
+                numericPrice - BuyOfValue != numericPrice && (
                   <>
                     <Button
                       variant="contained"
@@ -338,7 +274,7 @@ const CarForm = (newprice) => {
                   </>
                 )}
             </div>
-            {alert != "" && numericPrice - tradeOfValue != numericPrice ? (
+            {alert != "" && numericPrice - BuyOfValue != numericPrice ? (
               <Alert severity={alert} className="error">
                 {" "}
                 {alert == "error"
@@ -347,14 +283,7 @@ const CarForm = (newprice) => {
               </Alert>
             ) : null}
             <p>
-              <b>
-                {numericPrice - tradeOfValue > 0
-                  ? "Estimated Value to pay: $" +
-                    (numericPrice - tradeOfValue != numericPrice
-                      ? numericPrice - tradeOfValue
-                      : 0)
-                  : "Sorry You cannot trade this vehicle"}
-              </b>
+              <b>{"Final Value to pay: $" + numericPrice * carData.quantity}</b>
             </p>
           </div>
         </div>
