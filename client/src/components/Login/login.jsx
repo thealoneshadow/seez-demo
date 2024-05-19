@@ -26,8 +26,8 @@ const LoginSignupModal = ({ onClose }) => {
     e.preventDefault();
 
     const apiUrl = !isLogin
-      ? "seez-demo-f3nh-git-main-thealoneshadows-projects.vercel.app/signup"
-      : "seez-demo-f3nh-git-main-thealoneshadows-projects.vercel.app/login";
+      ? "https://seez-demo-f3nh.vercel.app/signup"
+      : "https://seez-demo-f3nh.vercel.app/login";
 
     try {
       const data = isLogin

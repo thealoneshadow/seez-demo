@@ -21,7 +21,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "seez-demo-f3nh-git-main-thealoneshadows-projects.vercel.app/productData"
+          "https://seez-demo-f3nh.vercel.app/productData"
         );
         setCarProducts(response.data.result);
         setPaginatedCarProducts(response.data.result.slice(0, 10));
